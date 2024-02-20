@@ -173,14 +173,15 @@ class ClaimerStarknet(Logger, RequestClient):
                     if hex(int(item['identity'], 16)) == hex(self.client.address):
                         merkle_path = item['merkle_path']
                         amount = item['amount']
+                        merkly_index = item['merkle_index']
                         amount_in_wei = to_wei(item['amount'], 'ether')
 
-        if merkle_path:
+        if merkle_path and merkly_index and amount_in_wei:
             self.logger_msg(
                 *self.client.acc_info, msg=f'This wallet is eligible to claim {amount} $STRK', type_msg='success')
 
             claim_call = self.client.prepare_call(
-                contract_address=ETHEREUM_CLAIM_CONTRACT,
+                contract_address=STARKNET_CLAIM_CONTRACT,
                 selector_name="claim",
                 calldata=[
                     self.client.address,

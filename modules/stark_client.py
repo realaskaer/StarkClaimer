@@ -67,7 +67,6 @@ class StarknetClient(Logger):
             address, wallet_type = last_data['address'], last_data['wallet_type']
 
             account = Account(client=w3, address=address, key_pair=key_pair, chain=StarknetChainId.MAINNET)
-
             return account, address, wallet_type
 
         possible_addresses = [(self.get_argent_address(key_pair, 1), 0),
@@ -231,7 +230,7 @@ class StarknetClient(Logger):
         try:
             tx_hash = hash_for_check
             if not check_hash:
-                tx_hash = (await self.account.execute(
+                tx_hash = (await self.account.execute_v1(
                     calls=calls,
                     auto_estimate=True
                 )).transaction_hash

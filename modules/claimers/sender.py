@@ -26,8 +26,8 @@ class Starknet(Logger):
             raise SoftwareExceptionWithoutRetry(f'There is no wallet listed for deposit to CEX: {error}')
 
         amount_in_wei, amount, _ = await self.client.get_token_balance(token_name='STRK')
-
-        self.logger_msg(*self.client.acc_info, msg=f'Transfer {amount} STRK to {cex_wallet}')
+        cex_wallet_info = f"{cex_wallet[:10]}....{cex_wallet[-10:]}"
+        self.logger_msg(*self.client.acc_info, msg=f'Transfer {amount} STRK to {cex_wallet_info}')
 
         transfer_call = self.client.prepare_call(
             contract_address=TOKENS_PER_CHAIN['Starknet']['STRK'],
