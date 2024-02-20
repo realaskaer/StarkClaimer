@@ -76,16 +76,22 @@ class StarknetClient(Logger):
         for address, wallet_type in possible_addresses:
             account = Account(client=w3, address=address, key_pair=key_pair, chain=StarknetChainId.MAINNET)
             try:
-                if check_balance:
-                    result = await account.get_balance(address)
-                else:
-                    result = await self.w3.get_class_hash_at(address)
+                result = await self.w3.get_class_hash_at(address)
 
                 if result:
                     await self.save_stark_data_file(account_name, address, wallet_type)
                     return account, address, wallet_type
+
             except ClientError:
-                pass
+                try:
+                    result = await account.get_balance(address)
+
+                    if result:
+                        await self.save_stark_data_file(account_name, address, wallet_type)
+                        return account, address, wallet_type
+
+                except ClientError:
+                    pass
 
         raise RuntimeError('This wallet is not deployed!')
 
