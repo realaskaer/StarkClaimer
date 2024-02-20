@@ -83,5 +83,5 @@ CLAIM_RECIPIENT_ADDRESS = 0x123
 """
 
 CLASSIC_ROUTES_MODULES_USING = [
-     ['claim_starknet_onchain'],
+     ['claim_starknet'],
 ]
