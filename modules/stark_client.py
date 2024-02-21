@@ -76,7 +76,7 @@ class StarknetClient(Logger):
         for address, wallet_type in possible_addresses:
             account = Account(client=w3, address=address, key_pair=key_pair, chain=StarknetChainId.MAINNET)
             try:
-                result = await self.w3.get_class_hash_at(address)
+                result = await account.get_balance(address)
 
                 if result:
                     await self.save_stark_data_file(account_name, address, wallet_type)
@@ -84,7 +84,7 @@ class StarknetClient(Logger):
 
             except ClientError:
                 try:
-                    result = await account.get_balance(address)
+                    result = await self.w3.get_class_hash_at(address)
 
                     if result:
                         await self.save_stark_data_file(account_name, address, wallet_type)
